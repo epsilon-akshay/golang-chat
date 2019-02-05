@@ -3,6 +3,7 @@ package main
 import (
 	"chat-golang/server/handler"
 	"chat-golang/server/logger"
+	"chat-golang/server/model"
 	"fmt"
 	"net/http"
 	"os"
@@ -17,10 +18,11 @@ func main() {
 	logFormatType := "json"
 
 	var clients map[*websocket.Conn]bool
+	chatMessages := make(chan model.Message)
 
 	log := logger.New(os.Stdout, logFormatType, logLevel)
 
-	router := handler.NewRouter(log, clients)
+	router := handler.NewRouter(log, clients, chatMessages)
 
 	log.Infof("litsening to %v:%v", host, port)
 	http.ListenAndServe(fmt.Sprintf("%v:%v", host, port), router)
