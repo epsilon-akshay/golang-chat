@@ -20,7 +20,8 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessag
 		}
 		defer conn.Close()
 
-		clienthandler.Handle(clients, conn, chatMessages)
 		go clienthandler.HandleMessage(clients, chatMessages, log)
+		clienthandler.Handle(clients, conn, chatMessages)
+
 	})
 }
