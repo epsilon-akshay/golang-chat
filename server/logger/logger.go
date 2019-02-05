@@ -15,8 +15,9 @@ func New(writer io.Writer, format string, lvl string) *logrus.Logger {
 	if err != nil {
 		log.Print("set level to info level")
 		log.SetLevel(logrus.InfoLevel)
+	} else {
+		log.SetLevel(level)
 	}
-	log.SetLevel(level)
 
 	if format == "json" {
 		log.SetFormatter(&logrus.JSONFormatter{})
