@@ -2,6 +2,7 @@ package handler
 
 import (
 	"chat-golang/server/clienthandler"
+	"chat-golang/server/model"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -9,7 +10,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool) http.HandlerFunc {
+func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessages chan model.Message) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{}
 
@@ -19,9 +20,7 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool) http.Handl
 		}
 		defer conn.Close()
 
-		clienthandler.Handle(clients, conn)
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		clienthandler.Handle(clients, conn, chatMessages)
+		go clienthandler.HandleMessage(clients, chatMessages, log)
 	})
 }

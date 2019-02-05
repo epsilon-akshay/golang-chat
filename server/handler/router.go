@@ -12,7 +12,7 @@ import (
 
 func NewRouter(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessages chan model.Message) http.Handler {
 	router := mux.NewRouter()
-	handleConn := handleConn(log, clients)
+	handleConn := handleConn(log, clients, chatMessages)
 	router.HandleFunc("/", handleConn)
 	return router
 }
