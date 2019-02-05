@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chat-golang/server/handler"
 	"chat-golang/server/logger"
 	"fmt"
 	"net/http"
@@ -15,6 +16,8 @@ func main() {
 
 	log := logger.New(os.Stdout, logFormatType, logLevel)
 
+	router := handler.NewRouter()
+
 	log.Infof("litsening to %v:%v", host, port)
-	http.ListenAndServe(fmt.Sprintf("%v:%v", host, port), nil)
+	http.ListenAndServe(fmt.Sprintf("%v:%v", host, port), router)
 }
