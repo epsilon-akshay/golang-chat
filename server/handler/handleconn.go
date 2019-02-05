@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"chat-golang/server/clienthandler"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -16,11 +17,11 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool) http.Handl
 		if err != nil {
 			log.Fatalf("could not upgrade http to websocket %v", err)
 		}
+		defer conn.Close()
 
-		log.Info(conn)
+		clienthandler.Handle(clients, conn)
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-
 	})
 }
