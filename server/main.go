@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/websocket"
 )
 
 func main() {
@@ -14,9 +16,11 @@ func main() {
 	logLevel := "info"
 	logFormatType := "json"
 
+	var clients map[*websocket.Conn]bool
+
 	log := logger.New(os.Stdout, logFormatType, logLevel)
 
-	router := handler.NewRouter()
+	router := handler.NewRouter(log, clients)
 
 	log.Infof("litsening to %v:%v", host, port)
 	http.ListenAndServe(fmt.Sprintf("%v:%v", host, port), router)
