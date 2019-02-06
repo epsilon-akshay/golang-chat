@@ -3,14 +3,16 @@ package handler
 import (
 	"chat-golang/server/messagehandler"
 	"chat-golang/server/model"
+	"database/sql"
 	"net/http"
+	"sync"
 
 	"github.com/sirupsen/logrus"
 
 	"github.com/gorilla/websocket"
 )
 
-func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessages chan model.Message) http.HandlerFunc {
+func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessages chan model.Message, db *sql.DB) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{}
 
@@ -22,8 +24,10 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessag
 
 		clients[conn] = true
 
+		mutex := &sync.Mutex{}
+
 		go messagehandler.HandleMessage(clients, chatMessages, log)
 
-		messagehandler.Handle(clients, conn, chatMessages)
+		messagehandler.Handle(clients, conn, chatMessages, db, mutex)
 	})
 }
