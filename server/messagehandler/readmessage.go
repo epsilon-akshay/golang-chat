@@ -20,7 +20,7 @@ func Handle(clients map[*websocket.Conn]bool, conn *websocket.Conn, chatMessages
 		}
 
 		mutex.Lock()
-		database.WriteToDb(db)
+		database.WriteToDb(db, &msg)
 		mutex.Unlock()
 
 		chatMessages <- msg

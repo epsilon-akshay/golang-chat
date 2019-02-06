@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/gorilla/websocket"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
