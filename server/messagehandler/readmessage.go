@@ -1,4 +1,4 @@
-package clienthandler
+package messagehandler
 
 import (
 	"chat-golang/server/model"

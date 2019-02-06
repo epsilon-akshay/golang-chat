@@ -17,7 +17,7 @@ func main() {
 	logLevel := "info"
 	logFormatType := "json"
 
-	var clients map[*websocket.Conn]bool
+	clients := make(map[*websocket.Conn]bool)
 	chatMessages := make(chan model.Message)
 
 	log := logger.New(os.Stdout, logFormatType, logLevel)

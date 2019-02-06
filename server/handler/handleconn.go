@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"chat-golang/server/clienthandler"
+	"chat-golang/server/messagehandler"
 	"chat-golang/server/model"
 	"net/http"
 
@@ -20,8 +20,10 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessag
 		}
 		defer conn.Close()
 
-		go clienthandler.HandleMessage(clients, chatMessages, log)
-		clienthandler.Handle(clients, conn, chatMessages)
+		clients[conn] = true
 
+		go messagehandler.HandleMessage(clients, chatMessages, log)
+
+		messagehandler.Handle(clients, conn, chatMessages)
 	})
 }
