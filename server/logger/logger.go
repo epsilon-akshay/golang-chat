@@ -6,24 +6,25 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func New(writer io.Writer, format string, lvl string) *logrus.Logger {
-	log := logrus.New()
+var log *logrus.Logger
 
-	log.SetOutput(writer)
+func New(writer io.Writer, format string, lvl string) {
+	logger := logrus.New()
+
+	logger.SetOutput(writer)
 
 	level, err := logrus.ParseLevel(lvl)
 	if err != nil {
-		log.Print("set level to info level")
-		log.SetLevel(logrus.InfoLevel)
+		logger.SetLevel(logrus.InfoLevel)
 	} else {
-		log.SetLevel(level)
+		logger.SetLevel(level)
 	}
 
 	if format == "json" {
-		log.SetFormatter(&logrus.JSONFormatter{})
+		logger.SetFormatter(&logrus.JSONFormatter{})
 	} else {
-		log.SetFormatter(&logrus.TextFormatter{})
+		logger.SetFormatter(&logrus.TextFormatter{})
 	}
 
-	return log
+	log = logger
 }

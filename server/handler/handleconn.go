@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"chat-golang/server/database"
 	"chat-golang/server/messagehandler"
 	"chat-golang/server/model"
 	"database/sql"
+	"fmt"
 	"net/http"
 	"sync"
 
@@ -21,6 +23,20 @@ func handleConn(log *logrus.Logger, clients map[*websocket.Conn]bool, chatMessag
 			log.Fatalf("could not upgrade http to websocket %v", err)
 		}
 		defer conn.Close()
+
+		var msg model.Message
+		rows, err := database.ReadMessageFromDb(db)
+		if err != nil {
+			log.Errorf("error in rows :%v", err)
+		}
+
+		for rows.Next() {
+			err = rows.Scan(&msg.Time, &msg.Name, &msg.Message, &msg.Chatgroup)
+			if err != nil {
+				log.Error(err)
+			}
+			fmt.Printf("%v: %v", msg.Name, msg.Message)
+		}
 
 		clients[conn] = true
 

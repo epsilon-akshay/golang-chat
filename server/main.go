@@ -15,7 +15,7 @@ import (
 
 func main() {
 	port := 4001
-	host := "localhost"
+	host := "0.0.0.0"
 	logLevel := "info"
 	logFormatType := "json"
 	chatdb := "./chatdb.db"

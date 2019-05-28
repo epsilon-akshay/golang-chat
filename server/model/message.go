@@ -1,7 +1,8 @@
 package model
 
 type Message struct {
-	Name    string
-	Message string
-	group   string
+	Time      string
+	Name      string
+	Message   string
+	Chatgroup string
 }
