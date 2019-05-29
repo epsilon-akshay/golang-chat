@@ -18,8 +18,8 @@ type Message struct {
 }
 
 func main() {
-	name := "akshay"
-	destName := "pranav"
+	name := "pranav"
+	destName := "akshay"
 	c, _, err := websocket.DefaultDialer.Dial(fmt.Sprintf("ws://localhost:4001/isol?source_name=%s&destination_name=%s", name, destName), nil)
 	if err != nil {
 		log.Fatal("dial:", err)
