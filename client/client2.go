@@ -25,7 +25,16 @@ func main() {
 		log.Fatal("dial:", err)
 	}
 	defer c.Close()
-
+	go func() {
+		var msg Message
+		for {
+			err := c.ReadJSON(&msg)
+			if err != nil {
+				fmt.Print("error reading message")
+			}
+			fmt.Println(msg)
+		}
+	}()
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		text, _ := reader.ReadString('\n')
