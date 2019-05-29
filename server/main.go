@@ -20,18 +20,18 @@ func main() {
 	logFormatType := "json"
 	chatdb := "./chatdb.db"
 
-	clients := make(map[*websocket.Conn]bool)
+	clients := make(map[*websocket.Conn][]string)
 	chatMessages := make(chan model.Message)
 
-	log := logger.New(os.Stdout, logFormatType, logLevel)
+	logger.New(os.Stdout, logFormatType, logLevel)
 
 	db, err := sql.Open("sqlite3", chatdb)
 	if err != nil {
-		log.Fatal(err)
+		logger.Log.Fatal(err)
 	}
 
-	router := handler.NewRouter(log, clients, chatMessages, db)
+	router := handler.NewRouter(clients, chatMessages, db)
 
-	log.Infof("litsening to %v:%v", host, port)
+	logger.Log.Infof("litsening to %v:%v", host, port)
 	http.ListenAndServe(fmt.Sprintf("%v:%v", host, port), router)
 }

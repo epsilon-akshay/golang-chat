@@ -13,7 +13,7 @@ func WriteToDb(db *sql.DB, msg *model.Message) {
 	stmt, err := db.Prepare("insert into chat values(?,?,?,?)")
 	checkErr(err)
 
-	stmt.Exec(time, msg.Name, msg.Message, "basegroup")
+	stmt.Exec(time, msg.SourceName, msg.Message, "basegroup")
 
 }
 

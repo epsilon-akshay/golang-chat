@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var log *logrus.Logger
+var Log *logrus.Logger
 
 func New(writer io.Writer, format string, lvl string) {
 	logger := logrus.New()
@@ -26,5 +26,5 @@ func New(writer io.Writer, format string, lvl string) {
 		logger.SetFormatter(&logrus.TextFormatter{})
 	}
 
-	log = logger
+	Log = logger
 }
